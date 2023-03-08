@@ -7,8 +7,9 @@ renderLoginForm();
 function renderLoginForm(){
 
   formContainer.innerHTML = `
+  <h2>Log in</h2>
   <input id="username" placeholder="username" /><br>
-  <input id="password" placeholder="password" /><br>
+  <input id="password" placeholder="password" type="password"/><br>
   <button id="btn">login</button>
   <p id="message"></p>
   <h2> Not a member? </h2>
@@ -47,13 +48,17 @@ function renderLoginForm(){
 // localStorage.removeItem('username');
 function renderNewUserForm(){
   formContainer.innerHTML = `
+  <h2>Become a member</h2>
   <input id="newUsername" placeholder="username" /><br>
-  <input id="newPassword" placeholder="password" /><br>
-  <button id="newUserBtn">create user</button>
+  <input id="newPassword" type="password" placeholder="password" /><br>
   <p id="newUserMessage"></p>
+  <button id="newUserBtn">create user</button>
+  <button id="goBack">back to login</button>
+
   `
 
   let newUserBtn = document.getElementById('newUserBtn');
+  let goBackBtn = document.getElementById('goBack');
 
   newUserBtn.addEventListener('click', () => {
     let newUsername = document.getElementById('newUsername');
@@ -78,6 +83,8 @@ function renderNewUserForm(){
         };
       })
   })
+
+  goBackBtn.addEventListener('click', renderLoginForm)
 }
 
 function renderCreatedUser(){
