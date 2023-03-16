@@ -8,7 +8,7 @@ renderLoginForm();
 function renderLoginForm(){
 
   formContainer.innerHTML = `
-  <h2>Log in</h2>
+  <h2>Log in to leave a greeting</h2>
   <input id="username" placeholder="username" /><br>
   <input id="password" placeholder="password" type="password"/><br>
   <button id="btn">login</button>
@@ -100,8 +100,8 @@ function renderCreatedUser(){
 
 function renderLoggedinPage(){
   formContainer.innerHTML = `
-  <h2>Congratulations, you can write a post!</h2>
-  <h3>Whats on your heart?</h3>
+  <h2>Congratulations, you leave a greeting!</h2>
+  <h3>Whats do you wnat to say?</h3>
   <input type="text" placeholder="write here" id="content" required>
   <button id="postBtn">Post</button>
   <button id="logOutBtn">Log out</button>`;
