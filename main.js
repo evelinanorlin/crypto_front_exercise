@@ -9,9 +9,11 @@ function renderLoginForm(){
 
   formContainer.innerHTML = `
   <h2>Log in to leave a greeting</h2>
-  <input id="username" placeholder="username" /><br>
-  <input id="password" placeholder="password" type="password"/><br>
-  <button id="btn">login</button>
+  <form>
+    <input id="username" placeholder="username" /><br>
+    <input id="password" placeholder="password" type="password"/><br>
+    <button id="btn" type="button">login</button>
+  </form>
   <p id="message"></p>
   <h2> Not a member? </h2>
   <button id="createNewUserBtn">Create a new user</button>
@@ -50,11 +52,13 @@ function renderLoginForm(){
 function renderNewUserForm(){
   formContainer.innerHTML = `
   <h2>Become a member</h2>
-  <input id="newUsername" placeholder="username" /><br>
-  <input id="newPassword" type="password" placeholder="password" /><br>
-  <p id="newUserMessage"></p>
-  <button id="newUserBtn">create user</button>
-  <button id="goBack">back to login</button>
+  <form>
+    <input id="newUsername" placeholder="username" /><br>
+    <input id="newPassword" type="password" placeholder="password" /><br>
+    <p id="newUserMessage"></p>
+    <button id="newUserBtn" type="button">create user</button>
+    <button id="goBack" type="button">back to login</button>
+  </form>
 
   `
 
@@ -100,11 +104,13 @@ function renderCreatedUser(){
 
 function renderLoggedinPage(){
   formContainer.innerHTML = `
-  <h2>Congratulations, you leave a greeting!</h2>
-  <h3>Whats do you wnat to say?</h3>
+  <h2>Congratulations, you can leave a greeting!</h2>
+  <h3>What do you want to say?</h3>
+  <form>
   <input type="text" placeholder="write here" id="content" required>
-  <button id="postBtn">Post</button>
-  <button id="logOutBtn">Log out</button>`;
+  <button id="postBtn" type="button">Post</button>
+  <button id="logOutBtn" type="button">Log out</button>
+  </form>`;
 
   let postBtn = document.getElementById('postBtn');
 
@@ -113,8 +119,23 @@ function renderLoggedinPage(){
   let logOutBtn = document.getElementById('logOutBtn');
 
   logOutBtn.addEventListener('click', () => {
-    localStorage.removeItem('username');
-    renderLoginForm();
+    let userLocal = localStorage.getItem('username');
+    let user = {"username": userLocal, "password": "secret"}
+    console.log(user);
+
+    fetch('http://localhost:4000/api/users/logout', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user)
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data)
+          localStorage.removeItem('username');
+          renderLoginForm();
+        })
   })
 }
 
@@ -139,23 +160,27 @@ function newPost(){
 }
 
 function renderposts(){
-  let postHtml = `<div><h2>Latest posts</h2>`
+  let postsHtml = `<div><h2>Latest posts</h2>`
+  let postArr = []
+  let postHtml;
 
   fetch('http://localhost:4000/api/blogs')
     .then(res => res.json())
     .then(data => {
-      console.log(data[0].author)
-
       data.map(post => {
-        postHtml += `
+        postHtml= `
         <h3>Author: ${post.author}</h3>
         <p>${post.blogPost}</p><hr>
       `
+        postArr.push(postHtml);
       })
+      postArr.reverse()
 
-      postHtml += `</div>`
-      console.log(postHtml);
-      postsContainer.innerHTML = postHtml; 
+      postArr.map(post => {
+        postsHtml += post;
+      })
+      postsHtml += `</div>`
+      postsContainer.innerHTML = postsHtml; 
     }) 
 }
 

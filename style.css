@@ -26,6 +26,7 @@ body, input, button{
 
 .form, .posts{
   width: 250px;
+  height: 400px;
   padding: 30px;
   border: 2px solid black;
   border-radius: 20px;
@@ -40,6 +41,7 @@ body, input, button{
 
 .posts{
   background: #acc4ac;
+  overflow: scroll;
 }
 
 input{
